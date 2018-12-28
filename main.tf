@@ -1,12 +1,13 @@
 module "iam_policy_document" {
   source = "./iam-policy-document-abstraction"
   trusting_role_arn = "${var.trusting_role_arn}"
+  trusting_role_arns = "${var.trusting_role_arns}"
   require_mfa = "${var.require_mfa}"
 }
 
 resource "aws_iam_policy" "iam_policy" {
   name        = "${var.trusted_policy_name}"
-  description = "Policy to allow assumption of ${var.trusting_role_arn}"
+  description = "Policy to allow assumption of trusting roles"
   policy      = "${module.iam_policy_document.iam_policy_json}"
 }
 
