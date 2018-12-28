@@ -9,8 +9,7 @@ data "aws_iam_policy_document" "assume_role_policy_mfa" {
     ]
 
     resources = [
-      "${var.trusting_role_arn}",
-      "${var.trusting_role_arns}"
+      "${split(",", coalesce(var.trusting_role_arn, join(",", var.trusting_role_arns)))}"
     ]
 
      condition {
@@ -35,8 +34,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
     ]
 
     resources = [
-      "${var.trusting_role_arn}",
-      "${var.trusting_role_arns}"
+      "${split(",", coalesce(var.trusting_role_arn, join(",", var.trusting_role_arns)))}"
     ]
   }
 }
