@@ -1,8 +1,8 @@
 # terraform-aws-iam-cross-account-trust-maps
-Maps assume role rights to trusted account resources for specific trusting account
+Maps assume role rights to trusted account resources for specific trusting role or multiple trusting roles
 
 
-## Example Usage:
+## Example Single Trusting ARN Usage:
 ```
 locals {
   trusting_role_arn_other_account = "arn:aws:iam::123456789012:role/cross-account-role-admin"
@@ -10,7 +10,7 @@ locals {
 
 module "iam_cross_account_trust_map" {
   source = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version = "1.0.0"
+  version = "1.1.0"
   trusting_role_arn = "${local.trusting_role_arn_other_account}"
   trusted_policy_name = "${replace(local.trusting_role_arn_other_account, "/^([^:]*)+:([^:]*)+:([^:]*)+:([^:]*)+:([^:]*)+:([^/]*)+/([^/]*)$/", "$5-$7")}"
   trusted_group_names = [
@@ -18,6 +18,31 @@ module "iam_cross_account_trust_map" {
   ]
   trusted_role_names = []
   require_mfa = false  
+  input_tags = "${local.common_tags}"
+}
+```
+
+## Example Multiple Trusting ARN Usage:
+```
+# This should have each terraform state role if you want a user to be able to apply terraform manually
+locals {
+  mycompany_organization_terraform_state_account_roles = [
+    "arn:aws:iam::123456789012:role/210987654321-terraform-state",
+    "arn:aws:iam::123456789012:role/123456789012-terraform-state"
+  ]
+}
+
+# When require_mfa is set to true, terraform init and terraform apply would need to be run with your STS acquired temporary token
+module "mycompany_organization_terraform_state_trust_maps" {
+  source = "StratusGrid/iam-role-cross-account-trusting/aws"
+  version = "1.1.0"
+  trusting_role_arns = "${local.mycompany_organization_terraform_state_account_roles}"
+  trusted_policy_name = "mycompany-organization-terraform-states"
+  trusted_group_names = [
+    "${aws_iam_group.mycompany_internal_admins.name}"
+  ]
+  trusted_role_names = []
+  require_mfa = false
   input_tags = "${local.common_tags}"
 }
 ```
