@@ -1,23 +1,23 @@
 data "aws_iam_policy_document" "assume_role_policy_mfa" {
   count = var.require_mfa ? 1 : 0
-  
+
   statement {
     effect = "Allow"
 
-    actions   = [
+    actions = [
       "sts:AssumeRole"
     ]
 
     resources = flatten([var.trusting_role_arn, var.trusting_role_arns])
 
-     condition {
-      test = "Bool"
+    condition {
+      test     = "Bool"
       variable = "aws:MultiFactorAuthPresent"
       values = [
         "true"
       ]
     }
-    
+
   }
 }
 
@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
   statement {
     effect = "Allow"
 
-    actions   = [
+    actions = [
       "sts:AssumeRole"
     ]
 
