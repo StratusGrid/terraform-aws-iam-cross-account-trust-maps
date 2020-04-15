@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "assume_role_policy_mfa" {
       "sts:AssumeRole"
     ]
 
-    resources = flatten([var.trusting_role_arn, var.trusting_role_arns])
+    resources = compact(flatten([var.trusting_role_arn, var.trusting_role_arns]))
 
     condition {
       test     = "Bool"
@@ -31,6 +31,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
       "sts:AssumeRole"
     ]
 
-    resources = flatten([var.trusting_role_arn, var.trusting_role_arns])
+    resources = compact(flatten([var.trusting_role_arn, var.trusting_role_arns]))
   }
 }
