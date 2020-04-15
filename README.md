@@ -34,7 +34,7 @@ locals {
 
 module "iam_cross_account_trust_map" {
   source = "StratusGrid/iam-cross-account-trust-maps/aws"
-  version = "2.0.0"
+  version = "2.0.2"
   trusting_role_arn = "${local.trusting_role_arn_other_account}"
   trusted_policy_name = "${replace(local.trusting_role_arn_other_account, "/^([^:]*)+:([^:]*)+:([^:]*)+:([^:]*)+:([^:]*)+:([^/]*)+/([^/]*)$/", "$5-$7")}"
   trusted_group_names = [
@@ -59,7 +59,7 @@ locals {
 # When require_mfa is set to true, terraform init and terraform apply would need to be run with your STS acquired temporary token
 module "mycompany_organization_terraform_state_trust_maps" {
   source = "StratusGrid/iam-role-cross-account-trusting/aws"
-  version = "2.0.0"
+  version = "2.0.2"
   trusting_role_arns = local.mycompany_organization_terraform_state_account_roles
   trusted_policy_name = "mycompany-organization-terraform-states"
   trusted_group_names = [
