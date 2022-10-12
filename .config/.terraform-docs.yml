@@ -1,0 +1,55 @@
+version: ""
+
+formatter: markdown table
+
+name:  terraform-aws-iam-cross-account-trust-maps
+
+content: |-
+  # terraform-aws-iam-cross-account-trust-maps
+
+  GitHub: [StratusGrid/terraform-aws-iam-cross-account-trust-maps](https://github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps)
+
+  Maps assume role rights to trusted account resources for a specific trusting account. 
+  
+  ## Example being used for same account role assumption rights mapping:
+  ```hcl
+  {{ include "examples/same-account/example1.tfnot" }}
+  ```
+  ---
+  ## Example Single Trusting ARN Usage:
+  ```hcl
+  {{ include "examples/single-trusting/example1.tfnot" }}
+  ```
+  ---
+  ## Example Multiple Trusting ARN Usage:
+  #### This should have each terraform state role if you want a user to be able to apply terraform manually
+  ```hcl
+  {{ include "examples/multi-trusting/example1.tfnot" }}
+  ```
+  ---
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  ---
+
+  <span style="color:red">Note:</span> Manual changes to the README will be overwritten when the documentation is updated. To update the documentation, run `terraform-docs -c .config/.terraform-docs.yml .`
+
+sections:
+  show:
+    - resources
+    - inputs
+    - outputs
+    - providers
+    - requirements
+
+sort:
+  enabled: true
+  by: name
+
+output:
+  file: README.md
+  mode: replace

@@ -32,9 +32,12 @@ variable "require_mfa" {
   type        = string
 }
 
+#tflint
 variable "input_tags" {
   description = "Map of tags to apply to resources"
   type        = map(string)
-  default     = {}
+  default = {
+    Developer   = "StratusGrid"
+    Provisioner = "Terraform"
+  }
 }
-
