@@ -1,0 +1,20 @@
+module "iam_group_restricted_admin" {
+  source  = "StratusGrid/iam-group-with-user-self-service/aws"
+  version = "2.1.0"
+  name    = "${var.name_prefix}-restricted-admin${local.full_suffix}"
+}
+
+module "iam_cross_account_trust_map_restricted_admin" {
+  source              = "StratusGrid/iam-cross-account-trust-maps/aws"
+  version             = "2.1.0"
+  #source = "github.com/StratusGrid/terraform-aws-iam-cross-account-trust-maps"
+
+  trusting_role_arn   = module.restricted_admin.role_arn
+  trusted_policy_name = module.iam_group_restricted_admin.group_name
+  trusted_group_names = [
+    "${var.name_prefix}-restricted-admin",
+  ]
+
+  require_mfa = true
+  input_tags  = merge(local.common_tags, {})
+}
